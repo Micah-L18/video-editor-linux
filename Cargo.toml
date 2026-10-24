@@ -1,0 +1,41 @@
+[package]
+name = "video_editor"
+version = "0.1.0"
+edition = "2021"
+authors = ["Marcus Chen <marcus.chen@company.com>"]
+description = "Video editor backend with FFmpeg bindings for Linux Ubuntu"
+license = "MIT"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Process spawning for ffprobe/ffmpeg commands (pure std::process)
+walkdir = "2.3"
+
+# Image decoding/rendering for frames
+image = { version = "0.24", default-features = false, features = ["jpeg", "png"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+cargo-audit = "0.17"
+
+[lib]
+name = "video_editor"
+path = "src/lib.rs"
+
+[[bin]]
+name = "test_loader"
+path = "src/bin/test_loader.rs"
+
+[[bin]]
+name = "test_video_engine"
+path = "src/bin/test_video_engine.rs"

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Editor</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js"></script>
+</head>
+<body class="loading">
+  <div id="app" class="container">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen visible">
+      <div class="loading-content">
+        <svg class="spinner" viewBox="0 0 50 50">
+          <circle class="spinner-circle" cx="25" cy="25" r="20"></circle>
+        </svg>
+        <p class="loading-text">Loading...</p>
+      </div>
+    </div>
+
+    <!-- Video Player Container -->
+    <div id="player-container" class="video-player hidden">
+      <video 
+        id="main-video"
+        controlsList="none"
+        webkit-playsinline
+        playsinline
+        preload="none"
+      ></video>
+      
+      <!-- Custom Controls Overlay -->
+      <div id="controls-overlay" class="controls-overlay">
+        <!-- Play/Pause Toggle -->
+        <button id="play-pause-btn" class="control-btn" aria-label="Play or Pause Video">
+          <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor" class="hidden">
+            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+          </svg>
+        </button>
+
+        <!-- Progress Bar Container -->
+        <div id="progress-container" class="progress-container">
+          <div id="thumbnail-track" class="thumbnail-track"></div>
+          <div id="seek-bar" class="seek-bar hidden">
+            <div id="seek-fill" class="seek-fill"></div>
+          </div>
+          <input 
+            id="seek-slider" 
+            type="range" 
+            min="0" 
+            max="100" 
+            value="0"
+            class="seek-slider hidden"
+            aria-label="Video seek bar"
+          >
+        </div>
+
+        <!-- Time Display -->
+        <div id="time-display" class="time-display">
+          <span id="current-time">0:00</span>
+          <span id="duration">/ 0:00</span>
+        </div>
+
+        <!-- Volume Control -->
+        <div id="volume-container" class="volume-container">
+          <button id="mute-btn" class="control-btn small" aria-label="Mute Video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+          </button>
+          <input 
+            id="volume-slider" 
+            type="range" 
+            min="0" 
+            max="100" 
+            value="80"
+            class="volume-slider hidden"
+            aria-label="Volume control"
+          >
+        </div>
+
+        <!-- Fullscreen Button -->
+        <button id="fullscreen-btn" class="control-btn small" aria-label="Toggle Fullscreen">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 1h-2v3h3v2h-5v-5h2zM16 8v2h2V5h-5v5h2V8zm2 11h-2v3h3v2h-5v-5h2z"/>
+          </svg>
+        </button>
+
+        <!-- Skip Buttons -->
+        <div id="skip-container" class="skip-container">
+          <button id="skip-backward" class="control-btn small" aria-label="Skip Backward">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+            </svg>
+          </button>
+          <button id="skip-forward" class="control-btn small" aria-label="Skip Forward">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading indicator for video -->
+      <div id="video-loading" class="loading-indicator hidden">
+        <span>Loading video...</span>
+      </div>
+    </div>
+
+    <!-- Error Screen -->
+    <div id="error-screen" class="screen hidden">
+      <div class="error-content">
+        <svg class="error-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <h2 id="error-title">Error</h2>
+        <p id="error-message"></p>
+        <button id="close-error-btn" class="primary-btn">Close</button>
+      </div>
+    </div>
+
+    <!-- File Upload / Select -->
+    <div id="upload-screen" class="screen hidden">
+      <div class="upload-content">
+        <h2>Select a Video</h2>
+        <p>Choose a video file to start editing</p>
+        <label for="video-input" class="file-upload-btn">
+          📁 Browse Videos
+        </label>
+        <input 
+          id="video-input" 
+          type="file" 
+          accept="video/*"
+          style="display:none"
+        >
+        <p class="hint-text">Supports: MP4, WebM, OGG</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

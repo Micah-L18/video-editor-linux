@@ -1,0 +1,402 @@
+/* Video Editor - Native Linux Ubuntu Look */
+:root {
+  /* Ubuntu-inspired colors */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #3a3a3a;
+  --accent-color: #e95420;
+  --accent-hover: #ff6a33;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-muted: #6c6c6c;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --warning-color: #ff9800;
+  
+  /* Dimensions */
+  --control-height: 60px;
+  --border-radius: 8px;
+  --thumb-radius: 4px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Ubuntu', 'Cantarell', 'Liberation Sans', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Screen Visibility Utility */
+.screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: flex !important;
+}
+
+/* Loading Screen */
+#loading-screen {
+  background-color: var(--bg-primary);
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1.5rem;
+}
+
+.spinner-circle {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-width: 4;
+  stroke-linecap: round;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+/* Video Player Container */
+#player-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #0a0a0a;
+}
+
+.video-player {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+#main-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Controls Overlay */
+.controls-overlay {
+  position: absolute;
+  bottom: var(--control-height);
+  left: 0;
+  right: 0;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  backdrop-filter: blur(4px);
+}
+
+/* Control Buttons */
+.control-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background-color: transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.control-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.control-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--text-primary);
+}
+
+.control-btn.small {
+  width: 36px;
+  height: 36px;
+}
+
+/* Progress Container */
+.progress-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Thumbnail Track (placeholder) */
+.thumbnail-track {
+  width: 8px;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--thumb-radius);
+}
+
+/* Seek Bar */
+.seek-bar {
+  flex: 1;
+  position: relative;
+}
+
+.seek-fill {
+  height: 100%;
+  background-color: var(--accent-color);
+  min-width: 2px;
+  border-radius: var(--thumb-radius);
+  transition: width 0.1s linear;
+}
+
+/* Seek Slider (hidden by default, shown on hover) */
+.seek-slider {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+
+.seek-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  cursor: pointer;
+  margin-top: -4px;
+}
+
+.seek-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* Time Display */
+.time-display {
+  font-family: 'Ubuntu Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+#current-time, #duration {
+  margin: 0 0.25rem;
+}
+
+/* Volume Controls */
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.volume-slider {
+  width: 100px;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: var(--thumb-radius);
+  cursor: pointer;
+  margin: 0;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  cursor: pointer;
+  margin-top: -5px;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* Skip Buttons Container */
+.skip-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Fullscreen Button */
+#fullscreen-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Loading Indicator in Player */
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+/* Error Screen */
+#error-screen {
+  background-color: var(--bg-primary);
+}
+
+.error-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.error-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  fill: var(--error-color);
+}
+
+#error-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+#error-message {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.primary-btn {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.primary-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Upload Screen */
+#upload-screen {
+  background-color: var(--bg-primary);
+}
+
+.upload-content h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.upload-content p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.file-upload-btn {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.file-upload-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+.hint-text {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .controls-overlay {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .progress-container {
+    width: 100%;
+    order: -1;
+    margin-bottom: 0.5rem;
+  }
+  
+  #seek-slider, #volume-slider {
+    display: none !important;
+  }
+  
+  .time-display {
+    font-size: 0.75rem;
+  }
+}
+
+/* Hover to show seek slider */
+.seek-bar:hover + .seek-slider {
+  opacity: 1;
+}
