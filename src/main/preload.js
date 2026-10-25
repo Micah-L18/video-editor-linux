@@ -16,5 +16,8 @@ contextBridge.exposeInMainWorld('api', {
   loadVideo: (filePath) => ipcRenderer.send('load-video', filePath),
   
   // Status queries
-  onStatusChange: (callback) => ipcRenderer.on('status-change', (event, status) => callback(status))
+  onStatusChange: (callback) => ipcRenderer.on('status-change', (event, status) => callback(status)),
+
+  // Trim functionality
+  trim: (start, end, inputPath) => ipcRenderer.invoke('trim', start, end, inputPath)
 });

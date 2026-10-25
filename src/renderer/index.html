@@ -102,6 +102,37 @@
             </svg>
           </button>
         </div>
+
+        <!-- Trim Controls -->
+        <div id="trim-container" class="trim-controls hidden">
+          <div class="trim-input-group">
+            <input
+              id="trim-start"
+              type="number"
+              placeholder="Start (sec)"
+              step="0.1"
+              min="0"
+              aria-label="Trim start time in seconds"
+            >
+          </div>
+          <div class="trim-input-group">
+            <input
+              id="trim-end"
+              type="number"
+              placeholder="End (sec)"
+              step="0.1"
+              min="0"
+              aria-label="Trim end time in seconds"
+            >
+          </div>
+          <button id="split-btn" class="control-btn primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;margin-right:6px;">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2z"/>
+            </svg>
+            Split Clip
+          </button>
+        </div>
+
       </div>
 
       <!-- Loading indicator for video -->
