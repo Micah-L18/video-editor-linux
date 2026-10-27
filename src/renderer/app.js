@@ -52,7 +52,9 @@
     setupUploadScreen();
     
     // Request API from preload script
-    api.onStatusChange(handleStatusChange);
+    if (typeof api.onStatusChange === 'function') {
+      api.onStatusChange(handleStatusChange);
+    }
     
     console.log('Video Editor initialized');
     hideScreen('loading-screen');
@@ -605,6 +607,7 @@
     const screen = document.getElementById(screenId);
     if (screen) {
       screen.classList.add('hidden');
+      screen.classList.remove('visible');
     }
   }
 
