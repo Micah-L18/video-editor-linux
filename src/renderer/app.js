@@ -55,6 +55,8 @@
     api.onStatusChange(handleStatusChange);
     
     console.log('Video Editor initialized');
+    hideScreen('loading-screen');
+    showScreen('upload-screen');
   }
 
   /**
@@ -76,20 +78,22 @@
           e.preventDefault();
           isPlaying ? togglePause() : togglePlay();
           break;
-        case 'ArrowLeft':
+        case 'ArrowLeft': {
           e.preventDefault();
           const seconds = 5;
           if (elements.mainVideo.duration && !isNaN(elements.mainVideo.duration)) {
-            seek(Math.max(0, Math.min(elements.mainVideo.currentTime - seconds, elements.mainVideo.duration));
+            seek(Math.max(0, Math.min(elements.mainVideo.currentTime - seconds, elements.mainVideo.duration)));
           }
           break;
-        case 'ArrowRight':
+        }
+        case 'ArrowRight': {
           e.preventDefault();
           const seconds = 5;
           if (elements.mainVideo.duration && !isNaN(elements.mainVideo.duration)) {
-            seek(Math.max(0, Math.min(elements.mainVideo.currentTime + seconds, elements.mainVideo.duration));
+            seek(Math.max(0, Math.min(elements.mainVideo.currentTime + seconds, elements.mainVideo.duration)));
           }
           break;
+        }
         case 'KeyF':
           e.preventDefault();
           toggleFullscreen();
