@@ -29,11 +29,15 @@
     errorTitle: document.getElementById('error-title'),
     errorMessage: document.getElementById('error-message'),
     closeErrorBtn: document.getElementById('close-error-btn'),
-    videoInput: document.getElementById('video-input')
+    videoInput: document.getElementById('video-input'),
+    exportBtn: document.getElementById('export-btn'),
+    operationProgress: document.getElementById('operation-progress'),
+    operationBar: document.getElementById('operation-bar')
   };
 
   // State
-  let isPlaying = false;
+  let currentFilePath = null;
+let isPlaying = false;
   let currentVolume = 0.8;
   let seekInterval = null;
   
@@ -50,6 +54,16 @@
     setupFullscreenControl();
     setupSkipButtons();
     setupUploadScreen();
+    elements.splitBtn.addEventListener('click', onSplitClick);
+    elements.exportBtn.addEventListener('click', onExportClick);
+    if (window.api.on) {
+      window.api.on('trim-progress', percent => updateProgress(percent));
+      window.api.on('trim-complete', path => { hideProgress(); console.log('Trim complete:', path); });
+      window.api.on('trim-error', err => { hideProgress(); showError(err); });
+      window.api.on('split-progress', percent => updateProgress(percent));
+      window.api.on('split-complete', paths => { hideProgress(); console.log('Split complete:', paths); });
+      window.api.on('split-error', err => { hideProgress(); showError(err); });
+    }
     
     // Request API from preload script
     if (typeof api.onStatusChange === 'function') {
@@ -237,6 +251,7 @@
 
     // Create object URL for the video
     const fileURL = URL.createObjectURL(file);
+    currentFilePath = file.path;
     loadVideo(fileURL);
 
     // Clear input so same file can be selected again
@@ -618,6 +633,30 @@
     console.log('Status changed:', status);
     // Could be used for buffering, loading progress, etc.
   }
+
+function onSplitClick() {
+    const splitPoint = parseFloat(elements.trimStart.value) || 0;
+    if (!currentFilePath) return showError('No video loaded');
+    window.api.split(splitPoint, currentFilePath).catch(console.error);
+}
+
+function onExportClick() {
+    const start = parseFloat(elements.trimStart.value) || 0;
+    const end = parseFloat(elements.trimEnd.value) || 0;
+    if (!currentFilePath) return showError('No video loaded');
+    window.api.trim(start, end, currentFilePath).catch(console.error);
+}
+
+function updateProgress(percent) {
+    if (!elements.operationProgress) return;
+    elements.operationProgress.classList.remove('hidden');
+    elements.operationBar.style.width = percent + '%';
+}
+
+function hideProgress() {
+    if (!elements.operationProgress) return;
+    elements.operationProgress.classList.add('hidden');
+}
 
   // Initialize the app
   init();

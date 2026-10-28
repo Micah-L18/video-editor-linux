@@ -14,10 +14,11 @@ contextBridge.exposeInMainWorld('api', {
   
   // File operations
   loadVideo: (filePath) => ipcRenderer.send('load-video', filePath),
+trim: (start, end, inputPath) => ipcRenderer.invoke('trim', { inputPath, startTime: start, endTime: end }),
+split: (splitTime, inputPath) => ipcRenderer.invoke('split', { inputPath, splitTime }),
+on: (channel, callback) => ipcRenderer.on(channel, (e, ...args) => callback(...args)),
   
   // Status queries
   onStatusChange: (callback) => ipcRenderer.on('status-change', (event, status) => callback(status)),
 
-  // Trim functionality
-  trim: (start, end, inputPath) => ipcRenderer.invoke('trim', start, end, inputPath)
 });
