@@ -31,6 +31,9 @@
     closeErrorBtn: document.getElementById('close-error-btn'),
     videoInput: document.getElementById('video-input'),
     exportBtn: document.getElementById('export-btn'),
+    splitBtn: document.getElementById('split-btn'),
+    trimStart: document.getElementById('trim-start'),
+    trimEnd: document.getElementById('trim-end'),
     operationProgress: document.getElementById('operation-progress'),
     operationBar: document.getElementById('operation-bar')
   };
@@ -54,8 +57,10 @@ let isPlaying = false;
     setupFullscreenControl();
     setupSkipButtons();
     setupUploadScreen();
-    elements.splitBtn.addEventListener('click', onSplitClick);
-    elements.exportBtn.addEventListener('click', onExportClick);
+    if (elements.splitBtn) elements.splitBtn.addEventListener('click', onSplitClick);
+else console.warn('splitBtn not found');
+    if (elements.exportBtn) elements.exportBtn.addEventListener('click', onExportClick);
+else console.warn('exportBtn not found');
     if (window.api.on) {
       window.api.on('trim-progress', percent => updateProgress(percent));
       window.api.on('trim-complete', path => { hideProgress(); console.log('Trim complete:', path); });
@@ -71,6 +76,7 @@ let isPlaying = false;
     }
     
     console.log('Video Editor initialized');
+    hideProgress();
     hideScreen('loading-screen');
     showScreen('upload-screen');
   }
@@ -635,12 +641,20 @@ let isPlaying = false;
   }
 
 function onSplitClick() {
+    if (!elements.trimStart) {
+        console.warn('trimStart element missing');
+        return;
+    }
     const splitPoint = parseFloat(elements.trimStart.value) || 0;
     if (!currentFilePath) return showError('No video loaded');
     window.api.split(splitPoint, currentFilePath).catch(console.error);
 }
 
 function onExportClick() {
+    if (!elements.trimStart || !elements.trimEnd) {
+        console.warn('Trim controls missing');
+        return;
+    }
     const start = parseFloat(elements.trimStart.value) || 0;
     const end = parseFloat(elements.trimEnd.value) || 0;
     if (!currentFilePath) return showError('No video loaded');
