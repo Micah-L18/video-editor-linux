@@ -34,6 +34,7 @@
     splitBtn: document.getElementById('split-btn'),
     trimStart: document.getElementById('trim-start'),
     trimEnd: document.getElementById('trim-end'),
+    trimContainer: document.getElementById('trim-container'),
     operationProgress: document.getElementById('operation-progress'),
     operationBar: document.getElementById('operation-bar')
   };
@@ -282,12 +283,15 @@ else console.warn('exportBtn not found');
     elements.mainVideo.onloadedmetadata = function() {
       hideLoading();
       updateDuration();
-      
+
       // Initialize slider position with current playback time
       const initialPercentage = (elements.mainVideo.currentTime / elements.mainVideo.duration) * 100;
       elements.seekSlider.value = Math.min(initialPercentage, 100).toFixed(2);
       updateSeekFill(initialPercentage);
-      
+
+      // Show trim controls after video loads
+      elements.trimContainer.classList.remove('hidden');
+
       if (!isPlaying) {
         togglePlay();
       } else {
