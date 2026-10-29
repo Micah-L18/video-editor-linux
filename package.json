@@ -18,8 +18,14 @@
     "appId": "com.company.videoeditor",
     "productName": "Video Editor",
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "category": "Video"
     }
+  },
+  "allowScripts": {
+    "electron@28.3.3": true
   }
 }
