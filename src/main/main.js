@@ -39,12 +39,12 @@ function createWindow() {
 }
 
 // Handle IPC messages
-ipcMain.handle('trim', async (event, start, end, inputPath) => {
+ipcMain.handle('trim', async (event, { inputPath, startTime, endTime }) => {
   try {
     if (!backendInstance) {
       throw new Error('Backend not initialized');
     }
-    const result = await backendInstance.trimVideo(inputPath, start, end);
+    const result = await backendInstance.trimVideo(inputPath, startTime, endTime);
     return result;
   } catch (error) {
     console.error('Trim error:', error);
@@ -52,7 +52,7 @@ ipcMain.handle('trim', async (event, start, end, inputPath) => {
   }
 });
 
-ipcMain.handle('split', async (event, splitTime, inputPath) => {
+ipcMain.handle('split', async (event, { inputPath, splitTime }) => {
   try {
     if (!backendInstance) {
       throw new Error('Backend not initialized');
