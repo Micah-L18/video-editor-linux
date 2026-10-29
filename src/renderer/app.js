@@ -40,10 +40,10 @@
 
   // State
   let currentFilePath = null;
-let isPlaying = false;
+  let isPlaying = false;
   let currentVolume = 0.8;
   let seekInterval = null;
-  
+
   // Exposed API for main process (for IPC if needed)
   const api = window.api || {};
 
@@ -142,7 +142,7 @@ else console.warn('exportBtn not found');
         handleSeekStart(e);
       }
     });
-    
+
     // Initialize slider with current playback position after metadata loads
     elements.mainVideo.onloadedmetadata = function() {
       // Wait for duration to be available, then initialize slider
@@ -153,7 +153,7 @@ else console.warn('exportBtn not found');
           updateSeekFill(initialPercentage);
         }
       };
-      
+
       // Call immediately if duration available, otherwise wait a bit for metadata
       if (elements.mainVideo.duration && !isNaN(elements.mainVideo.duration)) {
         initSliderAfterMetadata();
@@ -161,7 +161,7 @@ else console.warn('exportBtn not found');
         setTimeout(initSliderAfterMetadata, 100);
       }
     };
-    
+
     // Seek slider input: update video time when dragging
     elements.seekSlider.addEventListener('input', (e) => {
       const percentage = parseFloat(elements.seekSlider.value) / 100;
@@ -169,7 +169,7 @@ else console.warn('exportBtn not found');
         seek(percentage * elements.mainVideo.duration, true);
       }
     });
-    
+
     // Seek slider change (when drag ends): update fill bar only
     elements.seekSlider.addEventListener('change', () => {
       // Reset fill position to current slider value after drag
@@ -501,40 +501,6 @@ else console.warn('exportBtn not found');
     }
   }
 
-  /**
-   * Start seeking when video starts playing with metadata
-   */
-  function startSeekInterval() {
-    if (!isPlaying || !elements.mainVideo.duration || isNaN(elements.mainVideo.duration)) return;
-    
-    // Update seek fill position periodically during playback
-    seekInterval = setInterval(() => {
-      const percentage = (elements.mainVideo.currentTime / elements.mainVideo.duration) * 100;
-      updateSeekFill(percentage);
-    }, 50); // Update every 50ms
-    
-    // Listen for time updates to keep sync
-    elements.mainVideo.ontimeupdate = () => {
-      if (elements.mainVideo.duration && !isNaN(elements.mainVideo.duration)) {
-        const percentage = (elements.mainVideo.currentTime / elements.mainVideo.duration) * 100;
-        updateSeekFill(percentage);
-      }
-    };
-    
-    // Re-enable interval when seeking completes
-    elements.mainVideo.onseeked = () => {
-      if (isPlaying) {
-        startSeekInterval();
-      }
-    };
-  }
-
-  /**
-   * Stop seeking when paused or seeking manually
-   */
-  function stopSeekInterval() {
-    clearInterval(seekInterval);
-  }
 
   /**
    * Toggle fullscreen
@@ -558,11 +524,11 @@ else console.warn('exportBtn not found');
     elements.loadingScreen.classList.remove('hidden');
     elements.playerContainer.classList.add('hidden');
     elements.uploadScreen.classList.add('hidden');
-    
+
     if (elements.loadingText) {
       elements.loadingText.textContent = message;
     }
-    
+
     document.body.classList.remove('loading'); // Allow scrolling during loading
   }
 
@@ -581,7 +547,7 @@ else console.warn('exportBtn not found');
   function updateDuration() {
     const formatTime = (seconds) => {
       if (!seconds || isNaN(seconds)) return '0:00';
-      
+
       const mins = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60);
       return `${mins}:${secs.toString().padStart(2, '0')}`;
