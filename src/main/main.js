@@ -1,8 +1,16 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const url = 'file://' + path.join(__dirname, '..', 'renderer', 'index.html');
 
 let mainWindow;
+let backendInstance;
+
+// Initialize the backend once
+async function initializeBackend() {
+  const VideoBackend = require('./backend.js');
+  backendInstance = new VideoBackend();
+  await backendInstance.init();
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -30,7 +38,35 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(() => {
+// Handle IPC messages
+ipcMain.handle('trim', async (event, start, end, inputPath) => {
+  try {
+    if (!backendInstance) {
+      throw new Error('Backend not initialized');
+    }
+    const result = await backendInstance.trimVideo(inputPath, start, end);
+    return result;
+  } catch (error) {
+    console.error('Trim error:', error);
+    throw error;
+  }
+});
+
+ipcMain.handle('split', async (event, splitTime, inputPath) => {
+  try {
+    if (!backendInstance) {
+      throw new Error('Backend not initialized');
+    }
+    const result = await backendInstance.splitVideo(inputPath, splitTime);
+    return result;
+  } catch (error) {
+    console.error('Split error:', error);
+    throw error;
+  }
+});
+
+app.whenReady().then(async () => {
+  await initializeBackend();
   createWindow();
 
   app.on('activate', () => {
