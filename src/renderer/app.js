@@ -290,7 +290,9 @@ else console.warn('exportBtn not found');
       updateSeekFill(initialPercentage);
 
       // Show trim controls after video loads
-      elements.trimContainer.classList.remove('hidden');
+      if (elements.trimContainer) {
+        elements.trimContainer.classList.remove('hidden');
+      }
 
       if (!isPlaying) {
         togglePlay();
@@ -617,7 +619,11 @@ function onSplitClick() {
     }
     const splitPoint = parseFloat(elements.trimStart.value) || 0;
     if (!currentFilePath) return showError('No video loaded');
-    window.api.split(splitPoint, currentFilePath).catch(console.error);
+    showProgress();
+    window.api.split(splitPoint, currentFilePath).catch(err => {
+        hideProgress();
+        showError('Split failed: ' + err.message);
+    });
 }
 
 function onExportClick() {
@@ -628,13 +634,30 @@ function onExportClick() {
     const start = parseFloat(elements.trimStart.value) || 0;
     const end = parseFloat(elements.trimEnd.value) || 0;
     if (!currentFilePath) return showError('No video loaded');
-    window.api.trim(start, end, currentFilePath).catch(console.error);
+
+    // Validate inputs
+    if (start >= end) {
+        showError('End time must be greater than start time');
+        return;
+    }
+
+    showProgress();
+    window.api.trim(start, end, currentFilePath).catch(err => {
+        hideProgress();
+        showError('Export failed: ' + err.message);
+    });
 }
 
 function updateProgress(percent) {
     if (!elements.operationProgress) return;
     elements.operationProgress.classList.remove('hidden');
     elements.operationBar.style.width = percent + '%';
+}
+
+function showProgress() {
+    if (!elements.operationProgress) return;
+    elements.operationProgress.classList.remove('hidden');
+    elements.operationBar.style.width = '0%';
 }
 
 function hideProgress() {
