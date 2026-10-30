@@ -294,10 +294,23 @@ else console.warn('exportBtn not found');
         elements.trimContainer.classList.remove('hidden');
       }
 
-      // Initialize timeline
+      // Initialize timeline with video path
       if (typeof window.timeline !== 'undefined' && typeof window.timeline.init === 'function') {
-        window.timeline.init();
+        window.timeline.init(currentFilePath);
       }
+
+      // Set video duration for trim calculations
+      if (typeof window.timeline !== 'undefined' && typeof window.timeline.setVideoDuration === 'function') {
+        window.timeline.setVideoDuration(elements.mainVideo.duration);
+      }
+
+      // Set up video time update listener for playhead position
+      elements.mainVideo.addEventListener('timeupdate', () => {
+        const percentage = (elements.mainVideo.currentTime / elements.mainVideo.duration) * 100;
+        if (typeof window.timeline !== 'undefined' && typeof window.timeline.updatePlayheadPosition === 'function') {
+          window.timeline.updatePlayheadPosition(percentage);
+        }
+      });
 
       if (!isPlaying) {
         togglePlay();
