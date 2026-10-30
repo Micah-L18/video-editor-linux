@@ -29,9 +29,9 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'));
 
   // Open DevTools in development (remove in production)
-  if (process.env.NODE_ENV !== 'production') {
-    mainWindow.webContents.openDevTools();
-  }
+  // if (process.env.NODE_ENV !== 'production') {
+  //   mainWindow.webContents.openDevTools();
+  // }
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -61,6 +61,19 @@ ipcMain.handle('split', async (event, { inputPath, splitTime }) => {
     return result;
   } catch (error) {
     console.error('Split error:', error);
+    throw error;
+  }
+});
+
+ipcMain.handle('generate-thumbnails', async (event, { videoPath, frameCount }) => {
+  try {
+    if (!backendInstance) {
+      throw new Error('Backend not initialized');
+    }
+    const result = await backendInstance.generateThumbnails(videoPath, frameCount || 10);
+    return result;
+  } catch (error) {
+    console.error('Thumbnail generation error:', error);
     throw error;
   }
 });
