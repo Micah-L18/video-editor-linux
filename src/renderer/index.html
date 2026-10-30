@@ -6,6 +6,7 @@
   <title>Video Editor</title>
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
+  <script src="timeline.js" defer></script>
 </head>
 <body class="loading">
   <div id="app" class="container">
@@ -103,7 +104,10 @@
           </button>
         </div>
 
-        <!-- Trim Controls -->
+        <!-- Timeline -->
+    <div id="timeline" class="timeline-container"></div>
+
+    <!-- Trim Controls -->
         <div id="trim-container" class="trim-container hidden">
           <div class="trim-input-group">
             <label for="trim-start" style="font-size: 0.75rem; color: var(--text-secondary);">Start (sec)</label>

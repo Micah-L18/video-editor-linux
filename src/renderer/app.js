@@ -294,6 +294,11 @@ else console.warn('exportBtn not found');
         elements.trimContainer.classList.remove('hidden');
       }
 
+      // Initialize timeline
+      if (typeof window.timeline !== 'undefined' && typeof window.timeline.init === 'function') {
+        window.timeline.init();
+      }
+
       if (!isPlaying) {
         togglePlay();
       } else {
