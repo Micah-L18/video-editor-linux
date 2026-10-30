@@ -1,22 +1,47 @@
 /* Video Editor - Native Linux Ubuntu Look */
 :root {
-  /* Ubuntu-inspired colors */
+  /* Material Design 3 Dark Theme Colors */
+  --md-dark-primary: #ff9500;
+  --md-dark-primary-container: #4d2a00;
+  --md-dark-on-primary: #ff5f00;
+  --md-dark-on-primary-container: #ffdbb5;
+  --md-dark-secondary: #e6c8a1;
+  --md-dark-secondary-container: #5f4327;
+  --md-dark-on-secondary: #3d290e;
+  --md-dark-on-secondary-container: #ffdcb0;
+  --md-dark-surface: #121212;
+  --md-dark-surface-container: #2a2a2a;
+  --md-dark-on-surface: #e5e5e5;
+  --md-dark-on-surface-variant: #c7c7c7;
+  --md-dark-error: #ff0000;
+  --md-dark-error-container: #4d0000;
+  --md-dark-on-error: #ffffff;
+  --md-dark-on-error-container: #ff0000;
+
+  /* Ubuntu-inspired colors for fallback */
   --bg-primary: #1a1a1a;
   --bg-secondary: #2d2d2d;
   --bg-tertiary: #3a3a3a;
-  --accent-color: #e95420;
+  --accent-color: var(--md-dark-primary);
   --accent-hover: #ff6a33;
-  --text-primary: #ffffff;
+  --accent-active: #d44a1a;
+  --text-primary: var(--md-dark-on-surface);
   --text-secondary: #b0b0b0;
   --text-muted: #6c6c6c;
   --success-color: #4caf50;
-  --error-color: #f44336;
+  --error-color: var(--md-dark-error);
   --warning-color: #ff9800;
-  
+
   /* Dimensions */
   --control-height: 60px;
-  --border-radius: 8px;
+  --border-radius: 12px;
   --thumb-radius: 4px;
+  --control-spacing: 1rem;
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --elevation-2: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --elevation-3: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --elevation-4: 0 6px 12px rgba(0, 0, 0, 0.3);
+  --elevation-5: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 * {
@@ -181,6 +206,38 @@ body {
   height: 32px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: var(--thumb-radius);
+}
+
+/* Focus visibility improvements */
+*:focus-visible {
+  outline: 2px solid var(--md-dark-primary);
+  outline-offset: 2px;
+}
+
+/* Accessibility: Ensure sufficient contrast */
+.trim-input-group input {
+  color: var(--md-dark-on-surface);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.trim-input-group input:focus {
+  border-color: var(--md-dark-primary);
+}
+
+/* Ensure text contrast meets WCAG standards */
+.control-btn.trim-btn {
+  color: white;
+  background-color: var(--md-dark-primary);
+}
+
+.control-btn.trim-btn:hover {
+  background-color: var(--md-dark-on-primary);
+}
+
+.control-btn.trim-btn:focus {
+  outline: 2px solid var(--md-dark-primary);
+  outline-offset: 2px;
 }
 
 /* Seek Bar */
@@ -453,52 +510,181 @@ body {
 .trim-container {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--control-spacing);
   margin-left: auto;
+  padding: 1rem;
+  background-color: var(--md-dark-surface-container);
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--elevation-3);
+  transition: box-shadow 0.2s ease;
+}
+
+.trim-container:hover {
+  box-shadow: var(--elevation-4);
+}
+
+.trim-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
 }
 
 .trim-input-group input {
-  width: 90px;
-  height: 36px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  color: var(--text-primary);
+  width: 100px;
+  height: 48px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius);
+  color: var(--md-dark-on-surface);
   font-family: inherit;
-  font-size: 0.875rem;
-  padding: 0 0.75rem;
+  font-size: 1rem;
+  padding: 0 1rem;
   text-align: center;
   transition: all 0.2s ease;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: 400;
 }
 
 .trim-input-group input::placeholder {
-  color: var(--text-muted);
+  color: var(--md-dark-on-surface-variant);
 }
 
 .trim-input-group input:focus {
   outline: none;
-  border-color: var(--accent-color);
-  background-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 2px rgba(233, 84, 32, 0.3);
+  border-color: var(--md-dark-primary);
+  background-color: rgba(255, 95, 0, 0.1);
+  box-shadow: 0 0 0 2px rgba(255, 95, 0, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-#split-btn {
+.trim-input-group input:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Material Design ripple effect for trim buttons */
+.control-btn.trim-btn {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   min-width: auto;
-  padding: 0.6rem 1rem;
-  font-size: 0.875rem;
-  background-color: var(--accent-color);
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  background-color: var(--md-dark-primary);
   color: white;
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: var(--elevation-2);
+  font-weight: 500;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
 }
 
-#split-btn:hover {
-  background-color: var(--accent-hover);
+.control-btn.trim-btn:hover {
+  background-color: var(--md-dark-on-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--elevation-3);
+}
+
+.control-btn.trim-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 95, 0, 0.4), var(--elevation-2);
+}
+
+.control-btn.trim-btn:active {
+  transform: translateY(0);
+  background-color: var(--md-dark-primary-container);
+  box-shadow: var(--elevation-1);
+}
+
+/* Ripple effect for buttons */
+.control-btn.trim-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.control-btn.trim-btn:active::after {
+  width: 200px;
+  height: 200px;
+}
+
+/* Ripple effect for inputs */
+.trim-input-group input:focus::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--border-radius);
+  background-color: rgba(255, 95, 0, 0.1);
+  pointer-events: none;
+}
+
+
+/* Responsive adjustments for trim controls */
+@media (max-width: 768px) {
+  .trim-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    display: grid;
+  }
+
+  .trim-input-group input {
+    width: 100%;
+    height: 44px;
+    font-size: 0.9rem;
+  }
+
+  .control-btn.trim-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    height: 44px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* On small screens, stack the controls vertically */
+  .trim-container {
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .trim-input-group:nth-child(1) {
+    grid-column: span 2;
+  }
+
+  .trim-input-group:nth-child(2) {
+    grid-column: span 2;
+  }
+
+  .control-btn.trim-btn:nth-child(3) {
+    grid-column: span 1;
+  }
+
+  .control-btn.trim-btn:nth-child(4) {
+    grid-column: span 1;
+  }
 }
 
 #operation-progress {

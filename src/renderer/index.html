@@ -104,38 +104,40 @@
         </div>
 
         <!-- Trim Controls -->
-        <div id="trim-container" class="trim-controls hidden">
+        <div id="trim-container" class="trim-container hidden">
           <div class="trim-input-group">
+            <label for="trim-start" style="font-size: 0.75rem; color: var(--text-secondary);">Start (sec)</label>
             <input
               id="trim-start"
               type="number"
-              placeholder="Start (sec)"
+              placeholder="0.0"
               step="0.1"
               min="0"
               aria-label="Trim start time in seconds"
             >
           </div>
           <div class="trim-input-group">
+            <label for="trim-end" style="font-size: 0.75rem; color: var(--text-secondary);">End (sec)</label>
             <input
               id="trim-end"
               type="number"
-              placeholder="End (sec)"
+              placeholder="0.0"
               step="0.1"
               min="0"
               aria-label="Trim end time in seconds"
             >
           </div>
-          <button id="split-btn" class="control-btn primary" aria-label="Split clip">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;margin-right:6px;">
+          <button id="split-btn" class="control-btn trim-btn" aria-label="Split clip">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;">
               <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2z"/>
             </svg>
-            Split Clip
+            Split
           </button>
-          <button id="export-btn" class="control-btn primary" aria-label="Export video">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;margin-right:6px;">
+          <button id="export-btn" class="control-btn trim-btn" aria-label="Export video">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;">
               <path d="M5 9h4v6H5z"/><path d="M15 9h4v6h-4z"/><path d="M12 5l-7 7h4v6h6v-6h4z"/>
             </svg>
-            Export Video
+            Export
           </button>
         </div>
         <div id="operation-progress" class="hidden">
