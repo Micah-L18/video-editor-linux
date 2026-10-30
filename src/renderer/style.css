@@ -1,6 +1,6 @@
 /* Video Editor - Native Linux Ubuntu Look */
 :root {
-  /* Material Design 3 Dark Theme Colors */
+  /* Material Design 3 Dark Theme Colors - Updated for Premiere Pro-like look */
   --md-dark-primary: #ff9500;
   --md-dark-primary-container: #4d2a00;
   --md-dark-on-primary: #ff5f00;
@@ -18,10 +18,14 @@
   --md-dark-on-error: #ffffff;
   --md-dark-on-error-container: #ff0000;
 
-  /* Ubuntu-inspired colors for fallback */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-tertiary: #3a3a3a;
+  /* Additional colors for better visual hierarchy */
+  --md-dark-surface-variant: #1e1e1e;
+  --md-dark-outline: rgba(255, 255, 255, 0.12);
+
+  /* Updated colors for better contrast and Premiere Pro-like look */
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-tertiary: #2a2a2a;
   --accent-color: var(--md-dark-primary);
   --accent-hover: #ff6a33;
   --accent-active: #d44a1a;
@@ -32,11 +36,11 @@
   --error-color: var(--md-dark-error);
   --warning-color: #ff9800;
 
-  /* Dimensions */
-  --control-height: 60px;
-  --border-radius: 12px;
+  /* Dimensions - Tightened spacing */
+  --control-height: 48px;
+  --border-radius: 8px;
   --thumb-radius: 4px;
-  --control-spacing: 1rem;
+  --control-spacing: 0.75rem;
   --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3);
   --elevation-2: 0 2px 4px rgba(0, 0, 0, 0.3);
   --elevation-3: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -126,6 +130,17 @@ body {
   width: 100%;
   height: 100%;
   background-color: #0a0a0a;
+  overflow: hidden;
+}
+
+/* Ensure proper typography for readability */
+body {
+  font-family: 'Ubuntu', 'Cantarell', 'Liberation Sans', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+  font-size: 14px; /* Better readability at 1920x1080 */
 }
 
 .video-player {
@@ -157,8 +172,8 @@ body {
 
 /* Control Buttons */
 .control-btn {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border: none;
   background-color: transparent;
   border-radius: var(--border-radius);
@@ -168,22 +183,45 @@ body {
   justify-content: center;
   transition: all 0.2s ease;
   position: relative;
+  box-shadow: var(--elevation-1);
+  padding: 0;
 }
 
 .control-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
   transform: scale(1.05);
+  box-shadow: var(--elevation-2);
 }
 
 .control-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 2px var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-color), var(--elevation-2);
 }
 
 .control-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   fill: var(--text-primary);
+}
+
+/* Ripple effect for all interactive elements */
+.control-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  z-index: 0;
+}
+
+.control-btn:active::after {
+  width: 200px;
+  height: 200px;
 }
 
 .control-btn.small {
@@ -212,6 +250,12 @@ body {
 *:focus-visible {
   outline: 2px solid var(--md-dark-primary);
   outline-offset: 2px;
+}
+
+/* Enhanced focus styles for better accessibility */
+.control-btn:focus-visible,
+.trim-input-group input:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 95, 0, 0.4), var(--elevation-2);
 }
 
 /* Accessibility: Ensure sufficient contrast */
@@ -278,6 +322,7 @@ body {
   background: transparent;
   cursor: pointer;
   margin: 0;
+  box-shadow: var(--elevation-1);
 }
 
 .seek-slider::-webkit-slider-thumb {
@@ -288,6 +333,7 @@ body {
   background-color: var(--text-primary);
   cursor: pointer;
   margin-top: -4px;
+  box-shadow: var(--elevation-2);
 }
 
 .seek-slider::-moz-range-thumb {
@@ -297,6 +343,7 @@ body {
   border-radius: 50%;
   background-color: var(--text-primary);
   cursor: pointer;
+  box-shadow: var(--elevation-2);
 }
 
 /* Time Display */
@@ -477,7 +524,7 @@ body {
   .controls-overlay {
     flex-wrap: wrap;
     justify-content: center;
-    padding: 0 1rem;
+    padding: 0 0.75rem;
   }
 
   .progress-container {
@@ -498,6 +545,19 @@ body {
     width: 100%;
     justify-content: center;
     margin-top: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .trim-input-group input {
+    width: 80px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+
+  .control-btn.trim-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    height: 36px;
   }
 }
 
@@ -512,17 +572,60 @@ body {
   align-items: center;
   gap: var(--control-spacing);
   margin-left: auto;
-  padding: 1rem;
+  padding: 0.75rem;
   background-color: var(--md-dark-surface-container);
   border-radius: var(--border-radius);
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: var(--elevation-3);
   transition: box-shadow 0.2s ease;
+  elevation: 3;
 }
 
 .trim-container:hover {
   box-shadow: var(--elevation-4);
+}
+
+/* Enhanced trim controls styling */
+.trim-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.trim-input-group input {
+  width: 100px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius);
+  color: var(--md-dark-on-surface);
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0 0.75rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: 400;
+  box-sizing: border-box;
+}
+
+.trim-input-group input::placeholder {
+  color: var(--md-dark-on-surface-variant);
+}
+
+.trim-input-group input:focus {
+  outline: none;
+  border-color: var(--md-dark-primary);
+  background-color: rgba(255, 95, 0, 0.1);
+  box-shadow: 0 0 0 2px rgba(255, 95, 0, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.trim-input-group input:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .trim-input-group {
@@ -569,10 +672,10 @@ body {
 .control-btn.trim-btn {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   min-width: auto;
-  padding: 0.875rem 1.5rem;
-  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
   background-color: var(--md-dark-primary);
   color: white;
   border: none;
@@ -581,9 +684,10 @@ body {
   transition: all 0.2s ease;
   box-shadow: var(--elevation-2);
   font-weight: 500;
-  height: 48px;
+  height: 40px;
   position: relative;
   overflow: hidden;
+  elevation: 2;
 }
 
 .control-btn.trim-btn:hover {
@@ -706,24 +810,54 @@ body {
 /* Timeline Styles */
 .timeline-container {
   width: 100%;
-  padding: 1rem;
+  padding: 0.75rem;
   background-color: var(--md-dark-surface-container);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: var(--elevation-3);
+  elevation: 3;
 }
 
 .timeline-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .timeline-header h3 {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-primary);
   margin: 0;
+}
+
+/* Timeline track container with better styling */
+.timeline-track-container {
+  position: relative;
+  height: 100px;
+  padding: 0.25rem 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius);
+  overflow-x: auto;
+  overflow-y: hidden;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+  elevation: 2;
+}
+
+/* Make thumbnail track more visually appealing */
+.thumbnail-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 0.5rem;
+  position: relative;
+  min-width: fit-content;
+}
+
+/* Focus styling for timeline elements */
+.timeline-track-container:focus-visible {
+  outline: 2px solid var(--md-dark-primary);
+  outline-offset: 2px;
 }
 
 .timeline-content {
@@ -751,23 +885,34 @@ body {
 
 .thumbnail {
   position: relative;
-  width: 120px;
-  height: 68px;
+  width: 100px;
+  height: 56px;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: var(--thumb-radius);
-  margin: 0 0.25rem;
+  margin: 0 0.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: var(--elevation-1);
+  elevation: 1;
+  overflow: hidden; /* Ensure content doesn't overflow */
 }
 
 .thumbnail:hover {
   background-color: rgba(255, 255, 255, 0.1);
   transform: scale(1.05);
   z-index: 10;
+  box-shadow: var(--elevation-3);
+}
+
+.thumbnail:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: var(--elevation-3);
 }
 
 .thumbnail-content {
@@ -780,6 +925,16 @@ body {
   color: var(--text-secondary);
   text-align: center;
   padding: 0.25rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--thumb-radius);
+  display: block;
 }
 
 .thumbnail-time {
@@ -811,6 +966,7 @@ body {
   z-index: 5;
   cursor: pointer;
   box-shadow: 0 0 4px rgba(255, 149, 0, 0.5);
+  elevation: 3;
 }
 
 .playhead-handle {
@@ -824,6 +980,7 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 4px rgba(255, 149, 0, 0.8);
   cursor: pointer;
+  elevation: 3;
 }
 
 /* Trim Handles */
@@ -836,6 +993,7 @@ body {
   z-index: 4;
   cursor: ew-resize;
   opacity: 0.7;
+  elevation: 3;
 }
 
 .trim-start-handle:hover, .trim-end-handle:hover {
@@ -852,6 +1010,7 @@ body {
   background-color: var(--md-dark-primary);
   border-radius: 50%;
   box-shadow: 0 0 2px rgba(255, 149, 0, 0.5);
+  elevation: 3;
 }
 
 /* Responsive timeline */

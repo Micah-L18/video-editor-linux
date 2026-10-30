@@ -45,15 +45,15 @@
         <h3>Timeline</h3>
       </div>
       <div class="timeline-content">
-        <div class="timeline-track-container">
+        <div class="timeline-track-container" role="region" aria-label="Video timeline">
           <div class="thumbnail-track" id="thumbnail-track"></div>
-          <div class="playhead" id="playhead">
+          <div class="playhead" id="playhead" role="slider" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Playhead position">
             <div class="playhead-handle"></div>
           </div>
-          <div class="trim-start-handle" id="trim-start-handle">
+          <div class="trim-start-handle" id="trim-start-handle" role="slider" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Trim start handle">
             <div class="handle-grip"></div>
           </div>
-          <div class="trim-end-handle" id="trim-end-handle">
+          <div class="trim-end-handle" id="trim-end-handle" role="slider" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Trim end handle">
             <div class="handle-grip"></div>
           </div>
         </div>
