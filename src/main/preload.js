@@ -11,13 +11,14 @@ contextBridge.exposeInMainWorld('api', {
   setVolume: (volume) => ipcRenderer.send('set-volume', volume),
   getCurrentTime: () => ipcRenderer.send('get-current-time'),
   getDuration: () => ipcRenderer.send('get-duration'),
-  
+
   // File operations
   loadVideo: (filePath) => ipcRenderer.send('load-video', filePath),
-trim: (start, end, inputPath) => ipcRenderer.invoke('trim', { inputPath, startTime: start, endTime: end }),
-split: (splitTime, inputPath) => ipcRenderer.invoke('split', { inputPath, splitTime }),
-on: (channel, callback) => ipcRenderer.on(channel, (e, ...args) => callback(...args)),
-  
+  trim: (start, end, inputPath) => ipcRenderer.invoke('trim', { inputPath, startTime: start, endTime: end }),
+  split: (splitTime, inputPath) => ipcRenderer.invoke('split', { inputPath, splitTime }),
+  generateThumbnails: (videoPath, frameCount) => ipcRenderer.invoke('generate-thumbnails', { videoPath, frameCount }),
+  on: (channel, callback) => ipcRenderer.on(channel, (e, ...args) => callback(...args)),
+
   // Status queries
   onStatusChange: (callback) => ipcRenderer.on('status-change', (event, status) => callback(status)),
 
